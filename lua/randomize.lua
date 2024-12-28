@@ -33,7 +33,7 @@ function M.randomize_lines_in_range(opts)
 
 		-- Replace only the selected portion
 		local before = current_line:sub(1, col_start - 1) -- Text before the selection
-		local after = current_line:sub(col_end) -- Text after the selection
+		local after = current_line:sub(col_end + 1) -- Text after the selection
 		local updated_line = before .. random_number .. after
 
 		vim.fn.setline(line, updated_line) -- Update the line
