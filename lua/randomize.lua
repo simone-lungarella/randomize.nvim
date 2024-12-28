@@ -9,6 +9,7 @@ function M.randomize_lines_in_range(opts)
 
 	local min = tonumber(args[1])
 	local max = tonumber(args[2])
+	print("Received minimum of <" .. min .. "> and a maximum of <" .. max .. ">")
 	if not min or not max or min > max then
 		vim.api.nvim_err_writeln("Invalid range. Ensure min and max are numbers, and min <= max.")
 		return
@@ -28,6 +29,7 @@ function M.randomize_lines_in_range(opts)
 
 		-- Generate a random number
 		local random_number = tostring(math.random(min, max))
+		print("Generated number: " .. random_number)
 
 		-- Replace only the selected portion
 		local before = current_line:sub(1, col_start - 1) -- Text before the selection
