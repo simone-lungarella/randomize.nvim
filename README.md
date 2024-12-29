@@ -24,7 +24,17 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
     config = function()
         require("randomize").setup()
     end,
-},
+}
+```
+
+Using [packer.nvim](https://github.com/wbthomason/packer.nvim):
+```lua
+use({
+    "simone-lungarella/randomize.nvim",
+    config = function()
+        require("randomize").setup()
+    end,
+})
 ```
 
 ## Usage
@@ -40,7 +50,7 @@ https://github.com/user-attachments/assets/f7c9a360-d9b3-4467-bdb3-a409c9ebafed
 ### RandomizeDateBetween
 
 1. Select content in different lines in Visual mode;
-2. Run `:RandomizeDateBetween 2025-01-01 2025-12-31`;
+2. Run `:RandomizeDateBetween <yyyy-MM-dd> <yyyy-MM-dd>`;
 3. The function will replace selected content with random dates in choosen range.
 
 https://github.com/user-attachments/assets/793829e4-775e-4338-9212-d713c1279a20
