@@ -1,12 +1,12 @@
-Name     ,Surname ,Age ,Score 
-Mario    ,Rossi   , 43 , 6504 
-Mario    ,Bianchi , 55 , 9296 
-Valerio  ,Rossi   , 68 , 1096 
-Irene    ,Rossi   , 42 , 9647 
-Irene    ,Bianchi , 80 , 2615 
-Giuseppe ,Verdi   , 43 , 436 
-Valerio  ,Verdi   , 33 , 3256 
-Mario    ,Verdi   , 60 , 8041 
-Giuseppe ,Bianchi , 51 , 2974 
-Giuseppe ,Rossi   , 56 , 2930 
-Irene    ,Verdi   , 22 , 3082 
+Name     ,Surname ,Age ,Score
+Mario    ,Rossi   , 18 , 1000
+Mario    ,Bianchi , 18 , 1000
+Valerio  ,Rossi   , 18 , 1000
+Irene    ,Rossi   , 18 , 1000
+Irene    ,Bianchi , 18 , 1000
+Giuseppe ,Verdi   , 18 , 1000
+Valerio  ,Verdi   , 18 , 1000
+Mario    ,Verdi   , 18 , 1000
+Giuseppe ,Bianchi , 18 , 1000
+Giuseppe ,Rossi   , 18 , 1000
+Irene    ,Verdi   , 18 , 1000
