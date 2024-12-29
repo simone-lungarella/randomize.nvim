@@ -35,6 +35,8 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 2. Run `:RandomizeBetween <min> <max>`;
 3. The function will replace selected content with random numbers in choosen range.
 
+[showcase-randomize-between.webm](https://github.com/user-attachments/assets/6154c2f4-f42a-42f6-a487-a1e2d8ec3e59)
+
 ### RandomizeDateBetween
 
 1. Select content in different lines in Visual mode;
