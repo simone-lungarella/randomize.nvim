@@ -35,7 +35,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 2. Run `:RandomizeBetween <min> <max>`;
 3. The function will replace selected content with random numbers in choosen range.
 
-[showcase-randomize-between.webm](https://github.com/user-attachments/assets/6154c2f4-f42a-42f6-a487-a1e2d8ec3e59)
+https://github.com/user-attachments/assets/f7c9a360-d9b3-4467-bdb3-a409c9ebafed
 
 ### RandomizeDateBetween
 
@@ -43,7 +43,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 2. Run `:RandomizeDateBetween 2025-01-01 2025-12-31`;
 3. The function will replace selected content with random dates in choosen range.
 
-TODO: insert showcase
+https://github.com/user-attachments/assets/793829e4-775e-4338-9212-d713c1279a20
 
 ## License
 
