@@ -1,5 +1,25 @@
 local M = {}
 
+--- Generate random numbers within a specified range and replace selected text in the buffer.
+-- This function modifies the selected portion of lines in a buffer, replacing it with
+-- randomly generated numbers within a given range.
+--
+-- @param opts table A table containing the options for the function. It must include:
+--   - args (string): A string containing two space-separated numbers: `<min> <max>`.
+--                    These specify the range for random number generation.
+--   - line1 (number): The starting line number of the range of lines to process.
+--   - line2 (number): The ending line number of the range of lines to process.
+--
+-- The function uses the following rules:
+-- - If `args` is not in the format `<min> <max>`, it will display an error.
+-- - If `<min>` is greater than `<max>`, or if either is not a number, it will display an error.
+-- - For each line in the range from `line1` to `line2`, it replaces the visually selected
+--   text (columns defined by `vim.fn.col("'<")` and `vim.fn.col("'>")`) with a random number in specified range.
+--
+-- Errors:
+-- - Displays an error message if the arguments are invalid or the range is invalid.
+--
+-- @return nil This function does not return a value.
 function M.generate_random_numbers(opts)
 	local args = vim.split(opts.args, " ")
 	if #args ~= 2 then
@@ -17,27 +37,46 @@ function M.generate_random_numbers(opts)
 	local start_line = opts.line1
 	local end_line = opts.line2
 
-	-- Iterate through the selected lines
 	for line = start_line, end_line do
-		local current_line = vim.fn.getline(line) -- Get the current line content
-		local col_start, col_end = vim.fn.col("'<"), vim.fn.col("'>") -- Get the visual selection range (columns)
+		local current_line = vim.fn.getline(line)
+		-- Get the visual selection range (columns)
+		local col_start, col_end = vim.fn.col("'<"), vim.fn.col("'>")
 
-		-- Ensure the range is valid for this line
 		col_start = math.max(1, col_start)
 		col_end = math.min(#current_line + 1, col_end)
 
-		-- Generate a random number
 		local random_number = tostring(math.random(min, max))
 
 		-- Replace only the selected portion
-		local before = current_line:sub(1, col_start - 1) -- Text before the selection
-		local after = current_line:sub(col_end + 1) -- Text after the selection
+		local before = current_line:sub(1, col_start - 1)
+		local after = current_line:sub(col_end + 1)
 		local updated_line = before .. random_number .. after
 
-		vim.fn.setline(line, updated_line) -- Update the line
+		vim.fn.setline(line, updated_line)
 	end
 end
 
+--- Generate random dates within a specified range and replace selected text in the buffer.
+-- This function modifies the visually selected portion of lines in a buffer, replacing it
+-- with randomly generated dates within a given range.
+--
+-- @param opts table A table containing the options for the function. It must include:
+--   - args (string): A string containing two space-separated dates: `<min-date> <max-date>`.
+--                    Dates must be in the format `YYYY-MM-DD`.
+--   - line1 (number): The starting line number of the range of lines to process.
+--   - line2 (number): The ending line number of the range of lines to process.
+--
+-- The function processes each line in the specified range (`line1` to `line2`) as follows:
+-- 1. It extracts the visually selected portion of the line using `vim.fn.col`.
+-- 2. It generates a random date between `<min-date>` and `<max-date>` using `M.random_date`.
+-- 3. It replaces the visually selected portion of the line with the random date.
+--
+-- Errors:
+-- - Displays an error message if `args` is not in the format `<min-date> <max-date>`.
+-- - Displays an error message if the start date is later than the end date.
+-- - Displays an error message if the dates are not in the format `YYYY-MM-DD`.
+--
+-- @return nil This function does not return a value.
 function M.generate_random_dates(opts)
 	local args = vim.split(opts.args, " ")
 	if #args ~= 2 then
@@ -48,24 +87,22 @@ function M.generate_random_dates(opts)
 	local start_line = opts.line1
 	local end_line = opts.line2
 
-	-- Iterate through the selected lines
 	for line = start_line, end_line do
-		local current_line = vim.fn.getline(line) -- Get the current line content
-		local col_start, col_end = vim.fn.col("'<"), vim.fn.col("'>") -- Get the visual selection range (columns)
+		local current_line = vim.fn.getline(line)
+		-- Get the visual selection range (columns)
+		local col_start, col_end = vim.fn.col("'<"), vim.fn.col("'>")
 
-		-- Ensure the range is valid for this line
 		col_start = math.max(1, col_start)
 		col_end = math.min(#current_line + 1, col_end)
 
-		-- Generate a random number
 		local random_date = M.random_date(args[1], args[2])
 
 		-- Replace only the selected portion
-		local before = current_line:sub(1, col_start - 1) -- Text before the selection
-		local after = current_line:sub(col_end + 1) -- Text after the selection
+		local before = current_line:sub(1, col_start - 1)
+		local after = current_line:sub(col_end + 1)
 		local updated_line = before .. random_date .. after
 
-		vim.fn.setline(line, updated_line) -- Update the line
+		vim.fn.setline(line, updated_line)
 	end
 end
 
@@ -81,18 +118,18 @@ function M.random_date(start_date, end_date)
 	end
 
 	local start_time = os.time({
-		year = tonumber(start_year, 1970),
-		month = tonumber(start_month, 1),
-		day = tonumber(start_day, 1),
+		year = tonumber(start_year) or 1970,
+		month = tonumber(start_month) or 1,
+		day = tonumber(start_day) or 1,
 		hour = 0,
 		min = 0,
 		sec = 0,
 	})
 
 	local end_time = os.time({
-		year = tonumber(end_year, 2024),
-		month = tonumber(end_month, 12),
-		day = tonumber(end_day, 31),
+		year = tonumber(end_year) or 2024,
+		month = tonumber(end_month) or 12,
+		day = tonumber(end_day) or 31,
 		hour = 0,
 		min = 0,
 		sec = 0,
