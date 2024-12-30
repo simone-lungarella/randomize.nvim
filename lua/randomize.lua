@@ -84,37 +84,15 @@ function M.generate_random_dates(opts)
 		return
 	end
 
-	local start_line = opts.line1
-	local end_line = opts.line2
-
-	for line = start_line, end_line do
-		local current_line = vim.fn.getline(line)
-		-- Get the visual selection range (columns)
-		local col_start, col_end = vim.fn.col("'<"), vim.fn.col("'>")
-
-		col_start = math.max(1, col_start)
-		col_end = math.min(#current_line + 1, col_end)
-
-		local random_date = M.random_date(args[1], args[2])
-
-		-- Replace only the selected portion
-		local before = current_line:sub(1, col_start - 1)
-		local after = current_line:sub(col_end + 1)
-		local updated_line = before .. random_date .. after
-
-		vim.fn.setline(line, updated_line)
-	end
-end
-
-function M.random_date(start_date, end_date)
 	local pattern = "(%d+)-(%d+)-(%d+)"
 
 	-- Parse the start and end dates into timestamps
-	local start_year, start_month, start_day = start_date:match(pattern)
-	local end_year, end_month, end_day = end_date:match(pattern)
+	local start_year, start_month, start_day = args[1]:match(pattern)
+	local end_year, end_month, end_day = args[2]:match(pattern)
 
 	if not (start_year and start_month and start_day and end_year and end_month and end_day) then
-		error("Invalid date format. Expected 'YYYY-MM-DD'.")
+		vim.api.nvim_err_writeln("Invalid date format. Expected 'YYYY-MM-DD'.")
+		return
 	end
 
 	local start_time = os.time({
@@ -136,14 +114,31 @@ function M.random_date(start_date, end_date)
 	})
 
 	if start_time > end_time then
-		error("Start date must be earlier than end date.")
+		vim.api.nvim_err_writeln("Start date must be earlier than end date.")
+		return
 	end
 
-	-- Generate a random timestamp between the two dates
-	local random_time = math.random(start_time, end_time)
+	local start_line = opts.line1
+	local end_line = opts.line2
 
-	-- Convert the random timestamp back to a date string
-	return os.date("%Y-%m-%d", random_time)
+	for line = start_line, end_line do
+		local current_line = vim.fn.getline(line)
+		-- Get the visual selection range (columns)
+		local col_start, col_end = vim.fn.col("'<"), vim.fn.col("'>")
+
+		col_start = math.max(1, col_start)
+		col_end = math.min(#current_line + 1, col_end)
+
+		-- Convert the random timestamp back to a date string
+		local random_date = os.date("%Y-%m-%d", math.random(start_time, end_time))
+
+		-- Replace only the selected portion
+		local before = current_line:sub(1, col_start - 1)
+		local after = current_line:sub(col_end + 1)
+		local updated_line = before .. random_date .. after
+
+		vim.fn.setline(line, updated_line)
+	end
 end
 
 function M.setup()
