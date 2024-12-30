@@ -1,9 +1,9 @@
 local M = require("randomize")
 local eq = assert.are.same
 
-describe("randomize_between", function()
+describe("randomize_date_between", function()
 	it("should error on missing argument", function()
-		local opts = { args = "10", line1 = 1, line2 = 1 }
+		local opts = { args = "2024-01-01", line1 = 1, line2 = 1 }
 
 		local error_message = ""
 		---@diagnostic disable-next-line: duplicate-set-field
@@ -11,13 +11,13 @@ describe("randomize_between", function()
 			error_message = msg
 		end
 
-		M.generate_random_numbers(opts)
+		M.generate_random_dates(opts)
 
-		eq(error_message, "Invalid usage. Usage: :RandomizeBetween <min> <max>")
+		eq(error_message, "Invalid usage. Usage: :RandomizeDateBetween <min-date> <max-date>")
 	end)
 
-	it("should error on range having min > max", function()
-		local opts = { args = "20 10", line1 = 1, line2 = 1 }
+	it("should error when start date is after end date", function()
+		local opts = { args = "2024-01-01 2023-01-01", line1 = 1, line2 = 1 }
 
 		local error_message = ""
 		---@diagnostic disable-next-line: duplicate-set-field
@@ -25,15 +25,16 @@ describe("randomize_between", function()
 			error_message = msg
 		end
 
-		M.generate_random_numbers(opts)
+		M.generate_random_dates(opts)
 
-		eq(error_message, "Invalid range. Ensure min and max are numbers, and min <= max.")
+		eq(error_message, "Start date must be earlier than end date.")
 	end)
 
-	it("should replace selected portion with random number in range", function()
-		local min = 1
-		local max = 100
-		local opts = { args = min .. " " .. max, line1 = 1, line2 = 1 }
+	it("should replace selected portion with random date in range", function()
+		local start_range = "2023-01-01"
+		local end_range = "2024-01-01"
+
+		local opts = { args = start_range .. " " .. end_range, line1 = 1, line2 = 1 }
 
 		-- Mock the line content
 		---@diagnostic disable-next-line: duplicate-set-field
@@ -60,16 +61,15 @@ describe("randomize_between", function()
 			end
 		end
 
+		--- Mock random function to return starting range as random date
 		---@diagnostic disable-next-line: duplicate-set-field
 		math.random = function(...)
 			local args = { ... }
-			local first_arg = args[1]
-			local second_arg = args[2]
-			return second_arg - first_arg
+			return args[1]
 		end
 
-		M.generate_random_numbers(opts)
+		M.generate_random_dates(opts)
 
-		eq(vim.fn.mock_line, "This is a " .. max - min .. " line")
+		eq(vim.fn.mock_line, "This is a  " .. start_range .. " line")
 	end)
 end)
