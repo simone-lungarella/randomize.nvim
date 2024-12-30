@@ -70,6 +70,6 @@ describe("randomize_date_between", function()
 
 		M.generate_random_dates(opts)
 
-		eq(vim.fn.mock_line, "This is a  " .. start_range .. " line")
+		eq(vim.fn.mock_line, "This is a " .. start_range .. " line")
 	end)
 end)
